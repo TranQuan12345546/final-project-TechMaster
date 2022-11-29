@@ -1,22 +1,20 @@
 package finalproject.view;
 
 
-import finalproject.entity.Account;
-import finalproject.entity.ExcelWriterAccount;
-import finalproject.entity.ExcelWriterQuestion;
+import finalproject.entity.*;
 import finalproject.logichandle.AccountLogic;
 import finalproject.logichandle.QuesAnsLogic;
 import finalproject.logichandle.QuizLogic;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 import static finalproject.main.Main.*;
 
 
 public class View {
-    public void mainMenu() throws IOException {
-        Scanner sc = new Scanner(System.in);
+    public void mainMenu(Scanner sc) throws IOException {
         AccountLogic accountLogic = new AccountLogic();
         while (true) {
             showMenuLogin();
@@ -46,20 +44,26 @@ public class View {
     }
 
     public void showMenu() {
-        System.out.println("-------JAVA INTERVIEW QUESTION PROGRAM--------");
+        if (mode) {
+            System.out.println("-------JAVA INTERVIEW QUESTION PROGRAM--------");
+        } else {
+            System.out.println("-----------ENGLISH QUESTION PROGRAM-----------");
+        }
+
         System.out.println("1. Add Question and Answer.");
         System.out.println("2. Show already existing Question and Answer.");
         System.out.println("3. Edit Question and Answer.");
         System.out.println("4. Search question.");
-        System.out.println("5. Practice");
+        System.out.println("5. Practice.");
         System.out.println("6. Quiz.");
-        System.out.println("7. Account setting");
-        System.out.println("8. Exit.");
+        System.out.println("7. Account setting.");
+        System.out.println("8. Change mode.");
+        System.out.println("9. Exit.");
         System.out.print("Choose: ");
     }
 
     public void chooseMenu(Scanner sc, QuesAnsLogic quesAnsLogic, Account account) throws IOException {
-        int choice = checkNumberException(sc, 1, 8);
+        int choice = checkNumberException(sc, 1, 9);
         switch (choice) {
             case 1:
                 quesAnsLogic.addQuesAns(sc);
@@ -87,12 +91,33 @@ public class View {
                     accountLogic.menuLogin(sc, account);
                 }
             case 8:
-                ExcelWriterAccount excelWriterAccount = new ExcelWriterAccount();
-                excelWriterAccount.writeExcel(accounts);
-                ExcelWriterQuestion excelWriterQuestion = new ExcelWriterQuestion();
-                excelWriterQuestion.writeExcel(quesAnsDetailArrayList);
+                changeMode(sc);
+                break;
+            case 9:
+                writeData();
                 System.exit(0);
         }
+    }
+
+    private void writeData() throws IOException {
+        ExcelWriterAccount excelWriterAccount = new ExcelWriterAccount();
+        excelWriterAccount.writeExcel(accounts);
+        if (mode) {
+            ExcelWriterJava excelWriterJava = new ExcelWriterJava();
+            excelWriterJava.writeExcel(quesAnsDetailArrayList);
+        } else {
+            ExcelWriterEnglish excelWriterEnglish = new ExcelWriterEnglish();
+            excelWriterEnglish.writeExcel(quesAnsDetailArrayList);
+        }
+    }
+
+    private void changeMode(Scanner sc) throws IOException {
+        writeData();
+        new Question(1);
+        new Answer(1);
+        new QuesAnsDetail(1);
+        quesAnsDetailArrayList.clear();
+        mode(sc);
     }
 
     public void viewTopic() {
@@ -116,16 +141,13 @@ public class View {
     public void quizForeword() {
         System.out.println("------------Welcome to Quiz Test-----------");
         System.out.println("Think carefully before choosing the answer!");
-        System.out.println("1. Java Quiz");
-        System.out.println("2. English Quiz");
-        System.out.println("Choose: ");
     }
 
     public void askForNextQuestion() {
         System.out.println("Would you like to try another question?");
         System.out.println("1. Yes");
         System.out.println("2. No");
-        System.out.println("Choose: ");
+        System.out.print("Choose: ");
     }
 
     public int checkNumberException(Scanner sc, int firstNumber, int lastNumber) {
@@ -143,4 +165,18 @@ public class View {
         return choice;
     }
 
+    public void mode(Scanner sc) throws IOException {
+        System.out.println("1. Java Mode");
+        System.out.println("2. English Mode");
+        int choose = view.checkNumberException(sc, 1, 2);
+        if (choose == 1) {
+            mode = true;
+            ExcelWriterJava excelWriterJava = new ExcelWriterJava();
+            quesAnsDetailArrayList = (ArrayList<QuesAnsDetail>) excelWriterJava.readExcel(quesAnsDetailArrayList);
+        } else {
+            mode = false;
+            ExcelWriterEnglish excelWriterEnglish = new ExcelWriterEnglish();
+            quesAnsDetailArrayList = (ArrayList<QuesAnsDetail>) excelWriterEnglish.readExcel(quesAnsDetailArrayList);
+        }
+    }
 }

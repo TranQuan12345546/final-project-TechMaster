@@ -116,16 +116,19 @@ public class QuesAnsLogic {
         if (quesAnsDetailArrayList.size() == 0) {
             System.out.println("You have not added any questions or answers yet.");
         } else {
-            System.out.println("1. Search by keyword");
-            System.out.println("2. Search by topic");
-            int choice = view.checkNumberException(sc, 1, 2);
-            if (choice == 1) {
+            if (mode) {
+                System.out.println("1. Search by keyword");
+                System.out.println("2. Search by topic");
+                int choice = view.checkNumberException(sc, 1, 2);
+                if (choice == 1) {
+                    findQuestionByKey(sc);
+                }
+                if (choice == 2) {
+                    findQuestionByTopic(sc);
+                }
+            } else {
                 findQuestionByKey(sc);
             }
-            if (choice == 2) {
-                findQuestionByTopic(sc);
-            }
-
         }
     }
 

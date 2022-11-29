@@ -12,7 +12,7 @@ import static finalproject.main.Main.view;
 
 
 public class AccountLogic {
-    public void register(Scanner sc) throws IOException {
+    public void register(Scanner sc) {
         Account account = new Account();
         System.out.println("Enter your email: ");
         emailRegister(sc, account);
@@ -28,6 +28,10 @@ public class AccountLogic {
         boolean flag = true;
         do {
             email = sc.nextLine();
+            if (checkSpace(email)) {
+                System.out.println("Email must not contain spaces");
+                continue;
+            }
             if (patternMatches(email, regexPattern)) {
                 System.out.println("You need to enter the correct email format.");
                 continue;
@@ -44,12 +48,21 @@ public class AccountLogic {
     private void usernameRegister(Scanner sc, Account account) {
         System.out.println("Enter username: ");
         String user;
+        boolean flag = true;
         do {
             user = sc.nextLine();
             if (accounts.size() == 0) {
                 break;
             }
-        } while (checkUserExisted(user));
+            if (checkSpace(user)) {
+                System.out.println("Username must not contain spaces.");
+                continue;
+            }
+            if (checkUserExisted(user)){
+                continue;
+            }
+            flag = false;
+        } while (flag);
         account.setUsername(user);
     }
 
@@ -71,14 +84,21 @@ public class AccountLogic {
         boolean flag = true;
         do {
             password = sc.nextLine();
+            if (checkSpace(password)) {
+                System.out.println("Password must not contain spaces.");
+                continue;
+            }
             if (patternMatches(password, regexPattern)) {
                 System.out.println("Password must contain from 8-15 characters, at least 1 uppercase character, 1 special character (. , - _ ;)");
-            } else {
-                flag = false;
+                continue;
             }
-
+            flag = false;
         } while (flag);
         account.setPassword(password);
+    }
+
+    private boolean checkSpace(String string) {
+        return string.contains(" ");
     }
 
     public boolean patternMatches(String string, String regexPattern) {
@@ -98,18 +118,23 @@ public class AccountLogic {
             case 3: changePassword(sc, account);
                 break;
             case 4:
-                view.mainMenu();
+                view.mainMenu(sc);
                 break;
         }
     }
 
     private void changeUsername(Scanner sc, Account account) {
+        checkPassword(sc, account);
         System.out.println("Enter new username: ");
         String newUsername;
         boolean flag = true;
         do {
             int count = 0;
             newUsername = sc.nextLine();
+            if(checkSpace(newUsername)) {
+                System.out.println("Username must not contain spaces.");
+                continue;
+            }
             for (Account i : accounts) {
                 if (newUsername.equals(i.getUsername())) {
                     if (newUsername.equals(account.getUsername())) {
@@ -131,6 +156,7 @@ public class AccountLogic {
     }
 
     private void changeEmail(Scanner sc, Account account) {
+        checkPassword(sc, account);
         System.out.println("Enter new email: ");
         String newEmail;
         String regexPattern = "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$";
@@ -138,6 +164,10 @@ public class AccountLogic {
         do {
             int count = 0;
             newEmail = sc.nextLine();
+            if(checkSpace(newEmail)) {
+                System.out.println("Email must not contain spaces.");
+                continue;
+            }
             for (Account i : accounts) {
                 if (newEmail.equals(i.getEmail())) {
                     if (newEmail.equals(account.getEmail())) {
@@ -163,27 +193,43 @@ public class AccountLogic {
     }
 
     public void changePassword(Scanner sc, Account account) {
+        checkPassword(sc, account);
         System.out.println("Enter new password: ");
         String newPassword;
         String regexPattern = "((?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[.,-_;]).{8,15})";
         boolean flag = true;
         do {
-            int count = 0;
             newPassword = sc.nextLine();
+            if(checkSpace(newPassword)) {
+                System.out.println("Email must not contain spaces.");
+                continue;
+            }
             if (newPassword.equals(account.getPassword())) {
                 System.out.println("The new password cannot be the same as the old password.");
-                count++;
+                continue;
             }
             if (patternMatches(newPassword, regexPattern)) {
                 System.out.println("Password must contain from 8-15 characters, at least 1 uppercase character, 1 special character (. , - _ ;)");
-                count++;
+                continue;
             }
-            if (count == 0) {
-                flag = false;
-            }
+            flag = false;
         } while (flag);
         account.setPassword(newPassword);
         System.out.println("Change password successfully");
+    }
+
+    private void checkPassword(Scanner sc, Account account) {
+        System.out.println("Re-enter your old password");
+        String oldPass;
+        boolean flag = true;
+        do {
+            oldPass = sc.nextLine();
+            if (oldPass.equals(account.getPassword())) {
+                flag = false;
+            } else {
+                System.out.println("Incorrect password");
+            }
+        } while (flag);
     }
 
     private boolean checkEmailExisted(String email) {
@@ -262,11 +308,4 @@ public class AccountLogic {
             }
         } while (flag);
     }
-
-    /*public void inputDefaultAccount() {
-        Account account1 = new Account("trananhquan335@gmail.com", "xomchua1234", "quan123");
-        Account account2 = new Account("trananhquan@gmail.com", "xomchua123456", "quan12313");
-        accounts.add(account1);
-        accounts.add(account2);
-    }*/
 }

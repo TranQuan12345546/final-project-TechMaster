@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
 
-public class ExcelWriterQuestion {
+public class ExcelWriterJava {
     public void writeExcel(List<QuesAnsDetail> quesAnsDetails) throws IOException {
         Workbook workbook = new XSSFWorkbook();
         Sheet sheet = workbook.createSheet("QuestionSheet");

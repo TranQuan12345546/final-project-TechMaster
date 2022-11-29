@@ -2,7 +2,7 @@ package finalproject.entity;
 
 
 import java.util.Scanner;
-
+import static finalproject.main.Main.mode;
 
 public class QuesAnsDetail {
 
@@ -11,6 +11,12 @@ public class QuesAnsDetail {
     private final int id;
     private Question question;
     private Answer answer;
+
+    public QuesAnsDetail(int id) {
+        ID_COUPLE = 0;
+        this.id = ID_COUPLE;
+        ID_COUPLE++;
+    }
 
     public QuesAnsDetail(Question question, Answer answer) {
         this.id = ID_COUPLE++;
@@ -44,9 +50,15 @@ public class QuesAnsDetail {
 
     @Override
     public String toString() {
-        return "Câu hỏi " + id + " " +
-                question +
-                answer;
+        if(mode) {
+            return "Câu hỏi " + id + ": " +
+                    question +
+                    answer;
+        } else {
+            return "Từ vựng " + id + ": " +
+                    question +
+                    answer;
+        }
     }
 
     public void inputQuesAns(Scanner sc) {

@@ -1,6 +1,7 @@
 package finalproject.entity;
 
 import java.util.Scanner;
+import static finalproject.main.Main.mode;
 
 public class Answer implements Inputable{
     public static int ID_ANSWER = 1;
@@ -9,6 +10,12 @@ public class Answer implements Inputable{
     private String content;
 
     public Answer() {
+        this.id = ID_ANSWER;
+        ID_ANSWER++;
+    }
+
+    public Answer(int id) {
+        ID_ANSWER = 0;
         this.id = ID_ANSWER;
         ID_ANSWER++;
     }
@@ -32,8 +39,13 @@ public class Answer implements Inputable{
 
     @Override
     public String toString() {
-        return "Answer: " +
-                "'" + content + '\'';
+        if (mode) {
+            return "Answer: " +
+                    "'" + content + '\'';
+        } else {
+            return "Nghĩa là: " +
+                    "'" + content + '\'';
+        }
     }
 
     @Override

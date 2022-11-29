@@ -3,6 +3,8 @@ package finalproject.entity;
 import finalproject.constant.TopicQuestion;
 
 import java.util.Scanner;
+
+import static finalproject.main.Main.mode;
 import static finalproject.main.Main.view;
 
 
@@ -18,10 +20,21 @@ public class Question implements Inputable{
         ID_QUESTION++;
     }
 
+    public Question(int id) {
+        ID_QUESTION = 0;
+        this.id = ID_QUESTION;
+        ID_QUESTION++;
+    }
+
     public Question(String content, String topic) {
         this.id = ID_QUESTION++;
         this.content = content;
         Topic = topic;
+    }
+
+    public Question(String content) {
+        this.id = ID_QUESTION++;
+        this.content = content;
     }
 
     public int getId() {
@@ -46,31 +59,38 @@ public class Question implements Inputable{
 
     @Override
     public String toString() {
-        return  "Topic: '" + Topic + '\'' +
-                "." +
-                 content + '\'' + ". ";
+        if (mode) {
+            return  "Topic: '" + Topic + '\'' +
+                    "." +
+                    content + '\'' + ". ";
+        } else {
+            return content + " ";
+        }
+
     }
 
     @Override
     public void input(Scanner sc) {
-        view .viewTopic();
-        int choice = view.checkNumberException(sc, 1, 5);
-        switch (choice) {
-            case 1:
-                this.setTopic(TopicQuestion.JAVA_CORE.value);
-                break;
-            case 2:
-                this.setTopic(TopicQuestion.OOP.value);
-                break;
-            case 3:
-                this.setTopic(TopicQuestion.JAVA_THREADS.value);
-                break;
-            case 4:
-                this.setTopic(TopicQuestion.JAVA_COLLECTIONS.value);
-                break;
-            case 5:
-                this.setTopic(TopicQuestion.EXCEPTION.value);
-                break;
+        if (mode) {
+            view .viewTopic();
+            int choice = view.checkNumberException(sc, 1, 5);
+            switch (choice) {
+                case 1:
+                    this.setTopic(TopicQuestion.JAVA_CORE.value);
+                    break;
+                case 2:
+                    this.setTopic(TopicQuestion.OOP.value);
+                    break;
+                case 3:
+                    this.setTopic(TopicQuestion.JAVA_THREADS.value);
+                    break;
+                case 4:
+                    this.setTopic(TopicQuestion.JAVA_COLLECTIONS.value);
+                    break;
+                case 5:
+                    this.setTopic(TopicQuestion.EXCEPTION.value);
+                    break;
+            }
         }
         System.out.println("Please enter the content of the question: ");
         this.setContent(sc.nextLine());

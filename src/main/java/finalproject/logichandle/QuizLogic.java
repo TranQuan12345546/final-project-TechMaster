@@ -13,35 +13,20 @@ public class QuizLogic {
             System.out.println("Your database is too small to use this function, please create at least 4 question and answer pairs");
         } else {
             view.quizForeword();
-            int choice = view.checkNumberException(sc, 1, 2);
-            if (choice == 1) {
-                createQuestion(sc);
-                boolean flag = true;
-                while (flag){
-                    view.askForNextQuestion();
-                    int choose = view.checkNumberException(sc, 1, 2);
-                    switch (choose) {
-                        case 1: createQuestion(sc);
-                            break;
-                        case 2: flag = false;
-                            break;
-                    }
-                }
-            } else {
-                createQuestion(sc);
-                boolean flag = true;
-                while (flag) {
-                    view.askForNextQuestion();
-                    int choose = view.checkNumberException(sc, 1, 2);
-                    switch (choose) {
-                        case 1: createQuestion(sc);
-                            break;
-                        case 2: flag = false;
-                            break;
-                    }
+            createQuestion(sc);
+            boolean flag = true;
+            while (flag) {
+                view.askForNextQuestion();
+                int choose = view.checkNumberException(sc, 1, 2);
+                switch (choose) {
+                    case 1:
+                        createQuestion(sc);
+                        break;
+                    case 2:
+                        flag = false;
+                        break;
                 }
             }
-
         }
     }
 
@@ -95,7 +80,7 @@ public class QuizLogic {
         String answer3 = null;
         boolean flag3 = true;
         while (flag3) {
-            idQues3 = rd.nextInt(quesAnsDetailArrayList.size());
+            idQues3 = rd.nextInt(quesAnsDetailArrayList.size()) + 1;
             if (idQues3 != idQues && idQues3 != idQues1 && idQues3 != idQues2) {
                 for (QuesAnsDetail j : quesAnsDetailArrayList) {
                     if (j.getId() == idQues3) {
@@ -113,7 +98,7 @@ public class QuizLogic {
         String answer2 = null;
         boolean flag2 = true;
         while (flag2) {
-            idQues2 = rd.nextInt(quesAnsDetailArrayList.size());
+            idQues2 = rd.nextInt(quesAnsDetailArrayList.size()) + 1;
             if (idQues2 != idQues && idQues2 != idQues1) {
                 for (QuesAnsDetail j : quesAnsDetailArrayList) {
                     if (j.getId() == idQues2) {
@@ -132,7 +117,7 @@ public class QuizLogic {
         String answer1 = null;
         boolean flag1 = true;
         while (flag1) {
-            idQues1 = rd.nextInt(quesAnsDetailArrayList.size());
+            idQues1 = rd.nextInt(quesAnsDetailArrayList.size()) + 1;
             if (idQues1 != idQues) {
                 for (QuesAnsDetail j : quesAnsDetailArrayList) {
                     if (j.getId() == idQues1) {
@@ -151,7 +136,7 @@ public class QuizLogic {
         String answer = null;
         boolean flag = true;
         while (flag) {
-            idQues = rd.nextInt(quesAnsDetailArrayList.size());
+            idQues = rd.nextInt(quesAnsDetailArrayList.size()) + 1;
             for (QuesAnsDetail j : quesAnsDetailArrayList) {
                 if (j.getId() == idQues) {
                     System.out.println(j.getQuestion());
@@ -165,18 +150,15 @@ public class QuizLogic {
     }
 
     private void checkCorrectAnswer(String string, String answer) {
+        String[] strings;
         if (string.equals(answer)) {
-            String[] strings = {"Đáp án chính xác", "Tuyệt vời", "Bạn trả lời đúng rồi", "Làm tốt lắm"};
-            Random rd = new Random();
-            int num = rd.nextInt(4);
-            System.out.println(strings[num]);
+            strings = new String[]{"Đáp án chính xác", "Tuyệt vời", "Bạn trả lời đúng rồi", "Làm tốt lắm"};
         } else {
-            String[] strings = {"Đáp án không chính xác", "Ops, sai rồi :(", "Bạn trả lời sai rồi", "Ôn tập lại đi nhé!"};
-            Random rd = new Random();
-            int num = rd.nextInt(4);
-            System.out.println(strings[num]);
-
+            strings = new String[]{"Đáp án không chính xác", "Ops, sai rồi :(", "Bạn trả lời sai rồi", "Ôn tập lại đi nhé!"};
         }
+        Random rd = new Random();
+        int num = rd.nextInt(4);
+        System.out.println(strings[num]);
     }
 
 }
