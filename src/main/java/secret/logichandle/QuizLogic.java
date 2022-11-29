@@ -1,20 +1,18 @@
 package secret.logichandle;
 
-import secret.entity.CoupleQuesAns;
-import static secret.main.Main.view;
+import secret.entity.QuesAnsDetail;
 
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Random;
 import java.util.Scanner;
 
-import static secret.logichandle.QuesAnsLogic.checkNumberException;
-import static secret.main.Main.coupleQuesAnsArrayList;
+import static secret.main.Main.quesAnsDetailArrayList;
+import static secret.main.Main.view;
 
 public class QuizLogic {
     public void quizLogic(Scanner sc) {
-
-        if (coupleQuesAnsArrayList.size() < 4) {
+        if (quesAnsDetailArrayList.size() < 4) {
             System.out.println("Your database is too small to use this function, please create at least 4 question and answer pairs");
         } else {
             view.quizForeword();
@@ -22,7 +20,7 @@ public class QuizLogic {
             boolean flag = true;
             while (flag){
                 view.askForNextQuestion();
-                int choose = checkNumberException(sc, 1, 2);
+                int choose = view.checkNumberException(sc, 1, 2);
                 switch (choose) {
                     case 1: createQuestion(sc);
                         break;
@@ -49,13 +47,13 @@ public class QuizLogic {
         //shuffle element of array answers
         Collections.shuffle(Arrays.asList(answers));
 
-        view.showQuizz(answers);
+        view.showQuiz(answers);
 
         chooseCorrectAnswer(sc, answers, answer);
     }
 
     private void chooseCorrectAnswer(Scanner sc, String[] answers, String answer) {
-        int choose = checkNumberException(sc, 1, 4);
+        int choose = view.checkNumberException(sc, 1, 4);
         switch (choose) {
             case 1: checkCorrectAnswer(answers[0], answer);
                 break;
@@ -70,9 +68,9 @@ public class QuizLogic {
 
     private String getAnswer(int id) {
         String answer = null;
-        for (CoupleQuesAns i : coupleQuesAnsArrayList) {
+        for (QuesAnsDetail i : quesAnsDetailArrayList) {
             if (i.getId() == id) {
-                answer = i.getAnswer();
+                answer = i.getAnswer().getContent();
             }
         }
         return answer;
@@ -83,11 +81,11 @@ public class QuizLogic {
         String answer3 = null;
         boolean flag3 = true;
         while (flag3) {
-            idQues3 = rd.nextInt(coupleQuesAnsArrayList.size());
+            idQues3 = rd.nextInt(quesAnsDetailArrayList.size());
             if (idQues3 != idQues && idQues3 != idQues1 && idQues3 != idQues2) {
-                for (CoupleQuesAns j : coupleQuesAnsArrayList) {
+                for (QuesAnsDetail j : quesAnsDetailArrayList) {
                     if (j.getId() == idQues3) {
-                        answer3 = j.getAnswer();
+                        answer3 = j.getAnswer().getContent();
                         flag3 = false;
                     }
                 }
@@ -101,11 +99,11 @@ public class QuizLogic {
         String answer2 = null;
         boolean flag2 = true;
         while (flag2) {
-            idQues2 = rd.nextInt(coupleQuesAnsArrayList.size());
+            idQues2 = rd.nextInt(quesAnsDetailArrayList.size());
             if (idQues2 != idQues && idQues2 != idQues1) {
-                for (CoupleQuesAns j : coupleQuesAnsArrayList) {
+                for (QuesAnsDetail j : quesAnsDetailArrayList) {
                     if (j.getId() == idQues2) {
-                        answer2 = j.getAnswer();
+                        answer2 = j.getAnswer().getContent();
                         flag2 = false;
                     }
                 }
@@ -120,11 +118,11 @@ public class QuizLogic {
         String answer1 = null;
         boolean flag1 = true;
         while (flag1) {
-            idQues1 = rd.nextInt(coupleQuesAnsArrayList.size());
+            idQues1 = rd.nextInt(quesAnsDetailArrayList.size());
             if (idQues1 != idQues) {
-                for (CoupleQuesAns j : coupleQuesAnsArrayList) {
+                for (QuesAnsDetail j : quesAnsDetailArrayList) {
                     if (j.getId() == idQues1) {
-                        answer1 = j.getAnswer();
+                        answer1 = j.getAnswer().getContent();
                         flag1 = false;
                     }
                 }
@@ -139,12 +137,11 @@ public class QuizLogic {
         String answer = null;
         boolean flag = true;
         while (flag) {
-            idQues = rd.nextInt(coupleQuesAnsArrayList.size());
-            for (CoupleQuesAns j : coupleQuesAnsArrayList) {
+            idQues = rd.nextInt(quesAnsDetailArrayList.size());
+            for (QuesAnsDetail j : quesAnsDetailArrayList) {
                 if (j.getId() == idQues) {
-                    System.out.print("Question: ");
                     System.out.println(j.getQuestion());
-                    answer = j.getAnswer();
+                    answer = j.getAnswer().getContent();
                     flag = false;
                 }
             }

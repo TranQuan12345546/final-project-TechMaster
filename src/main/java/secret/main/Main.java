@@ -1,22 +1,25 @@
 package secret.main;
 
 
-import secret.entity.CoupleQuesAns;
-import secret.logichandle.QuesAnsLogic;
+import secret.entity.Account;
+import secret.entity.ExcelWriterAccount;
+import secret.entity.ExcelWriterQuestion;
+import secret.entity.QuesAnsDetail;
 import secret.view.View;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class Main {
-    public static ArrayList<CoupleQuesAns> coupleQuesAnsArrayList = new ArrayList<>();
+    public static ArrayList<QuesAnsDetail> quesAnsDetailArrayList = new ArrayList<>();
+    public static ArrayList<Account> accounts = new ArrayList<>();
     public static View view = new View();
-    public static void main(String[] args) {
-        QuesAnsLogic quesAnsLogic = new QuesAnsLogic();
-        CoupleQuesAns coupleQuesAns = new CoupleQuesAns();
-        quesAnsLogic.addDefaultQues();
-        while (true) {
-            view.showMenu();
-            view.chooseMenu(quesAnsLogic, coupleQuesAns);
-        }
+
+    public static void main(String[] args) throws IOException {
+        ExcelWriterAccount excelWriterAccount = new ExcelWriterAccount();
+        accounts = (ArrayList<Account>) excelWriterAccount.readExcel(accounts);
+        ExcelWriterQuestion excelWriterQuestion = new ExcelWriterQuestion();
+        quesAnsDetailArrayList = (ArrayList<QuesAnsDetail>) excelWriterQuestion.readExcel(quesAnsDetailArrayList);
+        view.mainMenu();
     }
 }

@@ -1,14 +1,53 @@
 package secret.view;
 
-import secret.entity.CoupleQuesAns;
+
+import secret.entity.Account;
+import secret.entity.ExcelWriterAccount;
+import secret.entity.ExcelWriterQuestion;
+import secret.logichandle.AccountLogic;
 import secret.logichandle.QuesAnsLogic;
 import secret.logichandle.QuizLogic;
 
+import java.io.IOException;
 import java.util.Scanner;
 
-import static secret.logichandle.QuesAnsLogic.checkNumberException;
+import static secret.main.Main.*;
+
 
 public class View {
+    public void mainMenu() throws IOException {
+        Scanner sc = new Scanner(System.in);
+
+        AccountLogic accountLogic = new AccountLogic();
+//        accountLogic.inputDefaultAccount();
+        while (true) {
+            showMenuLogin();
+            int choose = checkNumberException(sc, 1, 2);
+            if (choose == 1) {
+                accountLogic.register(sc);
+            }
+            if (choose == 2) {
+                accountLogic.logIn(sc);
+            }
+        }
+    }
+
+    public void showMenuLogin() {
+        System.out.println("Welcome to the program, please choose: ");
+        System.out.println("1. Register");
+        System.out.println("2. Log in");
+    }
+
+
+
+    public void LoginView() {
+        System.out.println("1. Change username.");
+        System.out.println("2. Change email.");
+        System.out.println("3. Change password.");
+        System.out.println("4. Log out.");
+        System.out.println("0. Exit");
+    }
+
     public void showMenu() {
         System.out.println("-------JAVA INTERVIEW QUESTION PROGRAM--------");
         System.out.println("1. Add Question and Answer.");
@@ -17,16 +56,16 @@ public class View {
         System.out.println("4. Search question.");
         System.out.println("5. Practice");
         System.out.println("6. Quiz.");
-        System.out.println("7. Exit.");
+        System.out.println("7. Account setting");
+        System.out.println("8. Exit.");
         System.out.print("Choose: ");
     }
-// comparable comparator generic
-    Scanner sc = new Scanner(System.in);
-    public void chooseMenu(QuesAnsLogic quesAnsLogic, CoupleQuesAns coupleQuesAns) {
-        int choice = checkNumberException(sc, 1, 7);
+
+    public void chooseMenu(Scanner sc, QuesAnsLogic quesAnsLogic, Account account) throws IOException {
+        int choice = checkNumberException(sc, 1, 8);
         switch (choice) {
             case 1:
-                quesAnsLogic.addQuesAns(sc, coupleQuesAns);
+                quesAnsLogic.addQuesAns(sc);
                 break;
             case 2:
                 quesAnsLogic.showCouple();
@@ -44,6 +83,16 @@ public class View {
                 quizLogic.quizLogic(sc);
                 break;
             case 7:
+                AccountLogic accountLogic = new AccountLogic();
+                while (true) {
+                    view.LoginView();
+                    accountLogic.menuLogin(sc, account);
+                }
+            case 8:
+                ExcelWriterAccount excelWriterAccount = new ExcelWriterAccount();
+                excelWriterAccount.writeExcel(accounts);
+                ExcelWriterQuestion excelWriterQuestion = new ExcelWriterQuestion();
+                excelWriterQuestion.writeExcel(quesAnsDetailArrayList);
                 System.exit(0);
         }
     }
@@ -57,7 +106,7 @@ public class View {
         System.out.println("5. Exception");
     }
 
-    public void showQuizz(String[] answers) {
+    public void showQuiz(String[] answers) {
         System.out.println("Choose 1 of the following answers");
         System.out.println("1. " + answers[0]);
         System.out.println("2. " + answers[1]);
@@ -76,4 +125,20 @@ public class View {
         System.out.println("1. Yes");
         System.out.println("2. No");
     }
+
+    public int checkNumberException(Scanner sc, int firstNumber, int lastNumber) {
+        int choice = -1;
+        do {
+            try {
+                choice = Integer.parseInt(sc.nextLine());
+                if (choice < firstNumber || choice > lastNumber) {
+                    System.out.println("Invalid selection, please choose again");
+                }
+            } catch (Exception e ) {
+                System.out.println("You need to enter a number.");
+            }
+        } while (choice < firstNumber || choice > lastNumber);
+        return choice;
+    }
+
 }
