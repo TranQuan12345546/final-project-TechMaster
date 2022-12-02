@@ -2,6 +2,7 @@ package finalproject.logichandle;
 
 
 import finalproject.entity.Account;
+import finalproject.entity.ExcelWriterAccount;
 
 import java.io.IOException;
 import java.util.Scanner;
@@ -108,22 +109,11 @@ public class AccountLogic {
     }
 
 
-    public void menuLogin(Scanner sc, Account account) throws IOException {
-        int choice = view.checkNumberException(sc, 1, 4);
-        switch (choice) {
-            case 1: changeUsername(sc, account);
-                break;
-            case 2: changeEmail(sc, account);
-                break;
-            case 3: changePassword(sc, account);
-                break;
-            case 4:
-                view.mainMenu(sc);
-                break;
-        }
+    public void menuLogin(Scanner sc,QuesAnsLogic quesAnsLogic , Account account) throws IOException {
+
     }
 
-    private void changeUsername(Scanner sc, Account account) {
+    public void changeUsername(Scanner sc, Account account) {
         checkPassword(sc, account);
         System.out.println("Enter new username: ");
         String newUsername;
@@ -155,7 +145,7 @@ public class AccountLogic {
         System.out.println("Change username successfully");
     }
 
-    private void changeEmail(Scanner sc, Account account) {
+    public void changeEmail(Scanner sc, Account account) {
         checkPassword(sc, account);
         System.out.println("Enter new email: ");
         String newEmail;
@@ -300,12 +290,37 @@ public class AccountLogic {
             String email = sc.nextLine();
             if (email.equals(account.getEmail())) {
                 AccountLogic accountLogic = new AccountLogic();
-                accountLogic.changePassword(sc,account);
+                accountLogic.changePasswordForgetMode(sc,account);
                 flag = false;
             }
             if (flag) {
                 System.out.println("The email you just entered does not match the registered email");
             }
         } while (flag);
+    }
+
+    private void changePasswordForgetMode(Scanner sc, Account account) {
+        System.out.println("Enter new password: ");
+        String newPassword;
+        String regexPattern = "((?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[.,-_;]).{8,15})";
+        boolean flag = true;
+        do {
+            newPassword = sc.nextLine();
+            if(checkSpace(newPassword)) {
+                System.out.println("Email must not contain spaces.");
+                continue;
+            }
+            if (newPassword.equals(account.getPassword())) {
+                System.out.println("The new password cannot be the same as the old password.");
+                continue;
+            }
+            if (patternMatches(newPassword, regexPattern)) {
+                System.out.println("Password must contain from 8-15 characters, at least 1 uppercase character, 1 special character (. , - _ ;)");
+                continue;
+            }
+            flag = false;
+        } while (flag);
+        account.setPassword(newPassword);
+        System.out.println("Change password successfully");
     }
 }

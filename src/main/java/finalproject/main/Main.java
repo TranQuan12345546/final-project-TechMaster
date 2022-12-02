@@ -17,8 +17,9 @@ public class Main {
     public static void main(String[] args) throws IOException {
         ExcelWriterAccount excelWriterAccount = new ExcelWriterAccount();
         accounts = (ArrayList<Account>) excelWriterAccount.readExcel(accounts);
+        ExcelWriterJava excelWriterJava = new ExcelWriterJava();
+        quesAnsDetailArrayList = (ArrayList<QuesAnsDetail>) excelWriterJava.readExcel(quesAnsDetailArrayList);
         Scanner sc = new Scanner(System.in);
-        view.mode(sc);
         view.mainMenu(sc);
     }
 }

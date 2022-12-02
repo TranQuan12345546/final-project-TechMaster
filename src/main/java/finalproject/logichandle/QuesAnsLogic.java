@@ -6,6 +6,7 @@ import finalproject.entity.QuesAnsDetail;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
+import java.util.stream.Stream;
 
 import static finalproject.main.Main.*;
 
@@ -49,7 +50,7 @@ public class QuesAnsLogic {
             System.out.println("Do you want to edit the question or the answer? ");
             System.out.println("1. Question.");
             System.out.println("2. Answer.");
-            int choose = view.checkNumberException(sc , 1, 2);
+            int choose = view.checkNumberException(sc, 1, 2);
             if (choose == 1) {
                 editQuestion(sc);
             }
@@ -158,7 +159,7 @@ public class QuesAnsLogic {
         ArrayList<QuesAnsDetail> quesAnsDetailArrayList1 = new ArrayList<>();
         int count = 0;
         for (QuesAnsDetail i : quesAnsDetailArrayList) {
-            if (i.getQuestion().getTopic().equals(string)){
+            if (i.getQuestion().getTopic().equals(string)) {
                 count++;
                 quesAnsDetailArrayList1.add(i);
             }
@@ -168,7 +169,7 @@ public class QuesAnsLogic {
         }
         if (count != 0) {
             System.out.println("There are " + count + " question with topic : " + string);
-            for(QuesAnsDetail i : quesAnsDetailArrayList1) {
+            for (QuesAnsDetail i : quesAnsDetailArrayList1) {
                 System.out.println(i);
             }
         }
@@ -178,10 +179,10 @@ public class QuesAnsLogic {
         System.out.println("Enter the keyword you want to search for: ");
         String findQues = sc.nextLine();
         boolean flag = true;
+        System.out.println("Result: ");
         for (QuesAnsDetail i : quesAnsDetailArrayList) {
             String term = i.getQuestion().getContent();
             if (term.contains(findQues)) {
-                System.out.println("This is the question you need to find: ");
                 System.out.println(i);
                 flag = false;
             }
@@ -192,29 +193,106 @@ public class QuesAnsLogic {
     }
 
     public void practice(Scanner sc) {
-        int idQues = randomQuestion();
-        System.out.println("Press Enter to see the answer");
-        String term  = sc.nextLine();
-        for (QuesAnsDetail i : quesAnsDetailArrayList) {
-            if (i.getId() == idQues) {
-                System.out.println(i.getAnswer().getContent());
+        Random rd = new Random();
+        if (mode) {
+            ArrayList<QuesAnsDetail> quesAnsDetailArrayList1 = new ArrayList<>();
+            view.viewPractice();
+            int choice = view.checkNumberException(sc, 1, 6);
+            switch (choice) {
+                case 1:
+                    quesAnsDetailArrayList1 = practiceTopic(TopicQuestion.JAVA_CORE.value);
+                    break;
+                case 2:
+                    quesAnsDetailArrayList1 = practiceTopic(TopicQuestion.OOP.value);
+                    break;
+                case 3:
+                    quesAnsDetailArrayList1 = practiceTopic(TopicQuestion.JAVA_THREADS.value);
+                    break;
+                case 4:
+                    quesAnsDetailArrayList1 = practiceTopic(TopicQuestion.JAVA_COLLECTIONS.value);
+                    break;
+                case 5:
+                    quesAnsDetailArrayList1 = practiceTopic(TopicQuestion.EXCEPTION.value);
+                    break;
+                case 6:
+                    quesAnsDetailArrayList1 = quesAnsDetailArrayList;
+                    break;
             }
+            if (quesAnsDetailArrayList1.size() == 0) {
+                System.out.println("No question with this topic.");
+            } else {
+                int idQues = rd.nextInt(quesAnsDetailArrayList1.size());
+                System.out.println(quesAnsDetailArrayList1.get(idQues).getQuestion());
+                System.out.print("Your answer is: ");
+                String term = new Scanner(System.in).nextLine();
+                System.out.println("The correct answer is: ");
+                System.out.println(quesAnsDetailArrayList1.get(idQues).getAnswer().getContent());
+
+                int choose;
+                int idQuesOld = idQues;
+                do {
+                    view.askForNextQuestion();
+                    choose = view.checkNumberException(sc, 1, 2);
+                    if (choose == 1) {
+                        int idQuesNew;
+                        do {
+                            idQuesNew = rd.nextInt(quesAnsDetailArrayList1.size());
+                            if (idQuesNew != idQuesOld) {
+                                System.out.println(quesAnsDetailArrayList1.get(idQuesNew).getQuestion());
+                                System.out.print("Your answer is: ");
+                                String term2 = new Scanner(System.in).nextLine();
+                                System.out.println("The correct answer is: ");
+                                System.out.println(quesAnsDetailArrayList1.get(idQuesNew).getAnswer().getContent());
+                            }
+                        } while (idQuesNew == idQuesOld);
+                        idQuesOld = idQuesNew;
+                    }
+                } while (choose != 2);
+            }
+        } else {
+            // English mode
+            int idQues = randomQuestion();
+            String term  = sc.nextLine();
+            for (QuesAnsDetail i : quesAnsDetailArrayList) {
+                if (i.getId() == idQues) {
+                    System.out.println("The correct answer is: " + i.getAnswer().getContent());
+                }
+            }
+            int choose;
+            int idQuesOld = idQues;
+            do {
+                view.askForNextQuestion();
+                choose = view.checkNumberException(sc, 1, 2);
+                if (choose == 1) {
+                    int idQuesNew;
+                    do {
+                        idQuesNew = rd.nextInt(quesAnsDetailArrayList.size());
+                        for (QuesAnsDetail i : quesAnsDetailArrayList) {
+                            if (i.getId() == idQuesNew && idQuesNew != idQuesOld) {
+                                int idQues1 = randomQuestion();
+                                String term1  = sc.nextLine();
+                                for (QuesAnsDetail j : quesAnsDetailArrayList) {
+                                    if (j.getId() == idQues1) {
+                                        System.out.println("The correct answer is: " + j.getAnswer().getContent());
+                                    }
+                                }
+                            }
+                        }
+                    } while (idQuesNew == idQuesOld);
+                    idQuesOld = idQuesNew;
+                }
+            } while (choose != 2);
         }
-        nextQuestion(sc);
     }
 
-    private void nextQuestion(Scanner sc) {
-        boolean flag = true;
-        while (flag){
-            view.askForNextQuestion();
-            int choose = view.checkNumberException(sc, 1, 2);
-            switch (choose) {
-                case 1: practice(sc);
-                    break;
-                case 2: flag = false;
-                    break;
+    private ArrayList<QuesAnsDetail> practiceTopic(String string) {
+        ArrayList<QuesAnsDetail> quesAnsDetailArrayList1 = new ArrayList<>();
+        for (QuesAnsDetail i : quesAnsDetailArrayList) {
+            if (i.getQuestion().getTopic().equals(string)) {
+                quesAnsDetailArrayList1.add(i);
             }
         }
+        return quesAnsDetailArrayList1;
     }
 
     private int randomQuestion() {
@@ -225,7 +303,7 @@ public class QuesAnsLogic {
             idQues = rd.nextInt(quesAnsDetailArrayList.size());
             for (QuesAnsDetail j : quesAnsDetailArrayList) {
                 if (j.getId() == idQues) {
-                    System.out.println(j.getQuestion().getContent());
+                    System.out.println("The word '" + j.getQuestion().getContent() + "' mean: ");
                     flag = false;
                 }
             }

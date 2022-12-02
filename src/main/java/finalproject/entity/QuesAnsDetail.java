@@ -51,7 +51,7 @@ public class QuesAnsDetail {
     @Override
     public String toString() {
         if(mode) {
-            return "Câu hỏi " + id + ": " +
+            return "Question " + id + ": " +
                     question +
                     answer;
         } else {

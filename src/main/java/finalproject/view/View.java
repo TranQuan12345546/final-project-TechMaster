@@ -41,6 +41,7 @@ public class View {
         System.out.println("2. Change email.");
         System.out.println("3. Change password.");
         System.out.println("4. Log out.");
+        System.out.println("5. Return to main menu");
     }
 
     public void showMenu() {
@@ -85,17 +86,39 @@ public class View {
                 quizLogic.quizLogic(sc);
                 break;
             case 7:
-                AccountLogic accountLogic = new AccountLogic();
-                while (true) {
-                    view.LoginView();
-                    accountLogic.menuLogin(sc, account);
-                }
+                settingAccount(sc, account);
+                break;
             case 8:
                 changeMode(sc);
                 break;
             case 9:
                 writeData();
                 System.exit(0);
+        }
+    }
+
+    private void settingAccount(Scanner sc, Account account) throws IOException {
+        AccountLogic accountLogic = new AccountLogic();
+        boolean flag = true;
+        while (flag) {
+            view.LoginView();
+            int choice7 = view.checkNumberException(sc, 1, 5);
+            switch (choice7) {
+                case 1: accountLogic.changeUsername(sc, account);
+                    break;
+                case 2: accountLogic.changeEmail(sc, account);
+                    break;
+                case 3: accountLogic.changePassword(sc, account);
+                    break;
+                case 4:
+                    view.mainMenu(sc);
+                    break;
+                case 5:
+                    ExcelWriterAccount excelWriterAccount = new ExcelWriterAccount();
+                    excelWriterAccount.writeExcel(accounts);
+                    flag = false;
+                    break;
+            }
         }
     }
 
@@ -151,18 +174,18 @@ public class View {
     }
 
     public int checkNumberException(Scanner sc, int firstNumber, int lastNumber) {
-        int choice = -1;
+        int choose = -1;
         do {
             try {
-                choice = Integer.parseInt(sc.nextLine());
-                if (choice < firstNumber || choice > lastNumber) {
+                choose = Integer.parseInt(sc.nextLine());
+                if (choose < firstNumber || choose > lastNumber) {
                     System.out.println("Invalid selection, please choose again");
                 }
             } catch (Exception e ) {
                 System.out.println("You need to enter a number.");
             }
-        } while (choice < firstNumber || choice > lastNumber);
-        return choice;
+        } while (choose < firstNumber || choose > lastNumber);
+        return choose;
     }
 
     public void mode(Scanner sc) throws IOException {
@@ -178,5 +201,16 @@ public class View {
             ExcelWriterEnglish excelWriterEnglish = new ExcelWriterEnglish();
             quesAnsDetailArrayList = (ArrayList<QuesAnsDetail>) excelWriterEnglish.readExcel(quesAnsDetailArrayList);
         }
+    }
+
+    public void viewPractice() {
+        System.out.println("Choose Topic to Practice: ");
+        System.out.println("1. Java Core");
+        System.out.println("2. OOP - Object Oriented");
+        System.out.println("3. Java Threads");
+        System.out.println("4. Java Collections");
+        System.out.println("5. Exception");
+        System.out.println("6. All topic");
+        System.out.println("Choose: ");
     }
 }

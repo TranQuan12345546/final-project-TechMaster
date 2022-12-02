@@ -12,8 +12,8 @@ public class Question implements Inputable{
     public static int ID_QUESTION = 1;
 
     private final int id;
-    private String content;
-    private String Topic;
+    protected String content;
+    protected String Topic;
 
     public Question() {
         this.id = ID_QUESTION;
@@ -62,9 +62,9 @@ public class Question implements Inputable{
         if (mode) {
             return  "Topic: '" + Topic + '\'' +
                     "." +
-                    content + '\'' + ". ";
+                    " Question: " + content + '\'' + ". ";
         } else {
-            return content + " ";
+            return content + " mean: ";
         }
 
     }

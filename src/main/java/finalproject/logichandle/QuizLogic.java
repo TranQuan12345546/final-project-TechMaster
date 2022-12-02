@@ -35,7 +35,7 @@ public class QuizLogic {
         String[] answers = new String[4];
         Random rd = new Random();
         //id question chose
-        int idQues = randomQuestion(rd, answers);
+        int idQues = randomQuizQuestion(rd, answers);
         String answer = getAnswer(idQues);
         // 1st answer
         int idQues1 = randomFirstAnswer(rd, answers, idQues);
@@ -131,7 +131,7 @@ public class QuizLogic {
         return idQues1;
     }
 
-    private int randomQuestion(Random rd, String[] answers) {
+    private int randomQuizQuestion(Random rd, String[] answers) {
         int idQues = 0;
         String answer = null;
         boolean flag = true;
@@ -159,6 +159,7 @@ public class QuizLogic {
         Random rd = new Random();
         int num = rd.nextInt(4);
         System.out.println(strings[num]);
+        System.out.println("Đáp án đúng là: " + answer);
     }
 
 }
