@@ -1,6 +1,8 @@
 package finalproject.entity;
 
 
+import finalproject.constant.StatusValue;
+
 import java.util.Scanner;
 import static finalproject.main.Main.mode;
 
@@ -11,21 +13,28 @@ public class QuesAnsDetail {
     private final int id;
     private Question question;
     private Answer answer;
+    private int checkMemorized;
+    private String status;
+
+
 
     public QuesAnsDetail(int id) {
         ID_COUPLE = 0;
         this.id = ID_COUPLE;
         ID_COUPLE++;
+        this.status = StatusValue.NOT_MEMORIZED.value;
     }
 
-    public QuesAnsDetail(Question question, Answer answer) {
+    public QuesAnsDetail(Question question, Answer answer, String status) {
         this.id = ID_COUPLE++;
         this.question = question;
         this.answer = answer;
+        this.status = status;
     }
 
     public QuesAnsDetail() {
         this.id = ID_COUPLE++;
+        this.status = StatusValue.NOT_MEMORIZED.value;
     }
 
     public int getId() {
@@ -48,6 +57,22 @@ public class QuesAnsDetail {
         this.answer = answer;
     }
 
+    public int getCheckMemorized() {
+        return checkMemorized;
+    }
+
+    public void setCheckMemorized() {
+        checkMemorized++;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
     @Override
     public String toString() {
         if(mode) {
@@ -55,8 +80,7 @@ public class QuesAnsDetail {
                     question +
                     answer;
         } else {
-            return "Từ vựng " + id + ": " +
-                    question +
+            return "" + question +
                     answer;
         }
     }

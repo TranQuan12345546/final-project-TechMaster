@@ -64,7 +64,8 @@ public class Question implements Inputable{
                     "." +
                     " Question: " + content + '\'' + ". ";
         } else {
-            return content + " mean: ";
+            return "Từ vựng " + id + ": " +
+                    content + ". ";
         }
 
     }

@@ -22,7 +22,8 @@ public class ExcelWriterEnglish {
         Cell firstCell = firstRow.createCell(0);
         firstCell.setCellValue("Stt");
         firstRow.createCell(1).setCellValue("Question");
-        firstRow.createCell(2).setCellValue("Answer");
+        firstRow.createCell(3).setCellValue("Answer");
+        firstRow.createCell(5).setCellValue("Status");
 
         for (QuesAnsDetail quesAnsDetail: quesAnsDetails){
             Row row = sheet.createRow(rowCount++);
@@ -30,8 +31,10 @@ public class ExcelWriterEnglish {
             cell1.setCellValue(quesAnsDetail.getId());
             Cell cell2 = row.createCell(1);
             cell2.setCellValue(quesAnsDetail.getQuestion().getContent());
-            Cell cell3 = row.createCell(2);
+            Cell cell3 = row.createCell(3);
             cell3.setCellValue(quesAnsDetail.getAnswer().getContent());
+            Cell cell4 = row.createCell(5);
+            cell4.setCellValue(quesAnsDetail.getStatus());
         }
         FileOutputStream fos = new FileOutputStream("English.xlsx");
         workbook.write(fos);
@@ -47,8 +50,8 @@ public class ExcelWriterEnglish {
         while (iterator.hasNext()){
             Row currentRow = iterator.next();
             Question question = new Question(currentRow.getCell(1).getStringCellValue());
-            Answer answer = new Answer(currentRow.getCell(2).getStringCellValue());
-            QuesAnsDetail quesAnsDetail = new QuesAnsDetail(question, answer);
+            Answer answer = new Answer(currentRow.getCell(3).getStringCellValue());
+            QuesAnsDetail quesAnsDetail = new QuesAnsDetail(question, answer, currentRow.getCell(5).getStringCellValue());
             quesAnsDetails.add(quesAnsDetail);
         }
         return quesAnsDetails;

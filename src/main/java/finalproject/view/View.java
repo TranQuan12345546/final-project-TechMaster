@@ -1,13 +1,7 @@
 package finalproject.view;
 
-
-import finalproject.entity.*;
 import finalproject.logichandle.AccountLogic;
-import finalproject.logichandle.QuesAnsLogic;
-import finalproject.logichandle.QuizLogic;
-
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Scanner;
 
 import static finalproject.main.Main.*;
@@ -59,88 +53,15 @@ public class View {
         System.out.println("6. Quiz.");
         System.out.println("7. Account setting.");
         System.out.println("8. Change mode.");
-        System.out.println("9. Exit.");
+        System.out.println("9. Learning Status");
+        System.out.println("10. Exit.");
         System.out.print("Choose: ");
     }
 
-    public void chooseMenu(Scanner sc, QuesAnsLogic quesAnsLogic, Account account) throws IOException {
-        int choice = checkNumberException(sc, 1, 9);
-        switch (choice) {
-            case 1:
-                quesAnsLogic.addQuesAns(sc);
-                break;
-            case 2:
-                quesAnsLogic.showCouple();
-                break;
-            case 3:
-                quesAnsLogic.editQuesAns(sc);
-                break;
-            case 4:
-                quesAnsLogic.findQuestion(sc);
-                break;
-            case 5:
-                quesAnsLogic.practice(sc);
-                break;
-            case 6:
-                QuizLogic quizLogic = new QuizLogic();
-                quizLogic.quizLogic(sc);
-                break;
-            case 7:
-                settingAccount(sc, account);
-                break;
-            case 8:
-                changeMode(sc);
-                break;
-            case 9:
-                writeData();
-                System.exit(0);
-        }
-    }
 
-    private void settingAccount(Scanner sc, Account account) throws IOException {
-        AccountLogic accountLogic = new AccountLogic();
-        boolean flag = true;
-        while (flag) {
-            view.LoginView();
-            int choice7 = view.checkNumberException(sc, 1, 5);
-            switch (choice7) {
-                case 1: accountLogic.changeUsername(sc, account);
-                    break;
-                case 2: accountLogic.changeEmail(sc, account);
-                    break;
-                case 3: accountLogic.changePassword(sc, account);
-                    break;
-                case 4:
-                    view.mainMenu(sc);
-                    break;
-                case 5:
-                    ExcelWriterAccount excelWriterAccount = new ExcelWriterAccount();
-                    excelWriterAccount.writeExcel(accounts);
-                    flag = false;
-                    break;
-            }
-        }
-    }
-
-    private void writeData() throws IOException {
-        ExcelWriterAccount excelWriterAccount = new ExcelWriterAccount();
-        excelWriterAccount.writeExcel(accounts);
-        if (mode) {
-            ExcelWriterJava excelWriterJava = new ExcelWriterJava();
-            excelWriterJava.writeExcel(quesAnsDetailArrayList);
-        } else {
-            ExcelWriterEnglish excelWriterEnglish = new ExcelWriterEnglish();
-            excelWriterEnglish.writeExcel(quesAnsDetailArrayList);
-        }
-    }
-
-    private void changeMode(Scanner sc) throws IOException {
-        writeData();
-        new Question(1);
-        new Answer(1);
-        new QuesAnsDetail(1);
-        quesAnsDetailArrayList.clear();
-        mode(sc);
+    public void menuStatus() {
+        System.out.println("1. View Learning status");
+        System.out.println("2. Change status");
     }
 
     public void viewTopic() {
@@ -186,21 +107,6 @@ public class View {
             }
         } while (choose < firstNumber || choose > lastNumber);
         return choose;
-    }
-
-    public void mode(Scanner sc) throws IOException {
-        System.out.println("1. Java Mode");
-        System.out.println("2. English Mode");
-        int choose = view.checkNumberException(sc, 1, 2);
-        if (choose == 1) {
-            mode = true;
-            ExcelWriterJava excelWriterJava = new ExcelWriterJava();
-            quesAnsDetailArrayList = (ArrayList<QuesAnsDetail>) excelWriterJava.readExcel(quesAnsDetailArrayList);
-        } else {
-            mode = false;
-            ExcelWriterEnglish excelWriterEnglish = new ExcelWriterEnglish();
-            quesAnsDetailArrayList = (ArrayList<QuesAnsDetail>) excelWriterEnglish.readExcel(quesAnsDetailArrayList);
-        }
     }
 
     public void viewPractice() {

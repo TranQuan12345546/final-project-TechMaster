@@ -19,8 +19,9 @@ public class ExcelWriterJava {
         Cell firstCell = firstRow.createCell(0);
         firstCell.setCellValue("Stt");
         firstRow.createCell(1).setCellValue("Question");
-        firstRow.createCell(2).setCellValue("Topic");
-        firstRow.createCell(3).setCellValue("Answer");
+        firstRow.createCell(3).setCellValue("Topic");
+        firstRow.createCell(5).setCellValue("Answer");
+        firstRow.createCell(7).setCellValue("Status");
 
         for (QuesAnsDetail quesAnsDetail: quesAnsDetails){
             Row row = sheet.createRow(rowCount++);
@@ -28,10 +29,12 @@ public class ExcelWriterJava {
             cell1.setCellValue(quesAnsDetail.getId());
             Cell cell2 = row.createCell(1);
             cell2.setCellValue(quesAnsDetail.getQuestion().getContent());
-            Cell cell3 = row.createCell(2);
+            Cell cell3 = row.createCell(3);
             cell3.setCellValue(quesAnsDetail.getQuestion().getTopic());
-            Cell cell4 = row.createCell(3);
+            Cell cell4 = row.createCell(5);
             cell4.setCellValue(quesAnsDetail.getAnswer().getContent());
+            Cell cell5 = row.createCell(7);
+            cell5.setCellValue(quesAnsDetail.getStatus());
         }
         FileOutputStream fos = new FileOutputStream("Question.xlsx");
         workbook.write(fos);
@@ -46,9 +49,9 @@ public class ExcelWriterJava {
         Row firstRow = iterator.next();
         while (iterator.hasNext()){
             Row currentRow = iterator.next();
-            Question question = new Question(currentRow.getCell(1).getStringCellValue(), currentRow.getCell(2).getStringCellValue());
-            Answer answer = new Answer(currentRow.getCell(3).getStringCellValue());
-            QuesAnsDetail quesAnsDetail = new QuesAnsDetail(question, answer);
+            Question question = new Question(currentRow.getCell(1).getStringCellValue(), currentRow.getCell(3).getStringCellValue());
+            Answer answer = new Answer(currentRow.getCell(5).getStringCellValue());
+            QuesAnsDetail quesAnsDetail = new QuesAnsDetail(question, answer, currentRow.getCell(7).getStringCellValue());
             quesAnsDetails.add(quesAnsDetail);
         }
         return quesAnsDetails;

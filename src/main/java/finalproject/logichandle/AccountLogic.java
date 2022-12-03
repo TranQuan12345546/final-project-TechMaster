@@ -2,7 +2,6 @@ package finalproject.logichandle;
 
 
 import finalproject.entity.Account;
-import finalproject.entity.ExcelWriterAccount;
 
 import java.io.IOException;
 import java.util.Scanner;
@@ -106,11 +105,6 @@ public class AccountLogic {
         return !Pattern.compile(regexPattern)
                 .matcher(string)
                 .find();
-    }
-
-
-    public void menuLogin(Scanner sc,QuesAnsLogic quesAnsLogic , Account account) throws IOException {
-
     }
 
     public void changeUsername(Scanner sc, Account account) {
@@ -264,9 +258,10 @@ public class AccountLogic {
         String password = sc.nextLine();
         if (password.equals(account.getPassword())) {
             QuesAnsLogic quesAnsLogic = new QuesAnsLogic();
+            GeneralLogic generalLogic = new GeneralLogic();
             while (true) {
                 view.showMenu();
-                view.chooseMenu(sc, quesAnsLogic, account);
+                generalLogic.chooseMenu(sc, quesAnsLogic, account);
             }
         } else {
             System.out.println("Password is not correct");

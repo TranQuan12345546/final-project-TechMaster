@@ -1,5 +1,6 @@
 package finalproject.logichandle;
 
+import finalproject.constant.StatusValue;
 import finalproject.entity.QuesAnsDetail;
 
 import java.util.*;
@@ -49,6 +50,7 @@ public class QuizLogic {
         view.showQuiz(answers);
 
         chooseCorrectAnswer(sc, answers, answer);
+
     }
 
     private void chooseCorrectAnswer(Scanner sc, String[] answers, String answer) {
@@ -138,7 +140,7 @@ public class QuizLogic {
         while (flag) {
             idQues = rd.nextInt(quesAnsDetailArrayList.size()) + 1;
             for (QuesAnsDetail j : quesAnsDetailArrayList) {
-                if (j.getId() == idQues) {
+                if (j.getId() == idQues && j.getStatus().equals(StatusValue.NOT_MEMORIZED.value)) {
                     System.out.println(j.getQuestion());
                     answer = j.getAnswer().getContent();
                     flag = false;
@@ -153,6 +155,7 @@ public class QuizLogic {
         String[] strings;
         if (string.equals(answer)) {
             strings = new String[]{"Đáp án chính xác", "Tuyệt vời", "Bạn trả lời đúng rồi", "Làm tốt lắm"};
+            addMemorized(answer);
         } else {
             strings = new String[]{"Đáp án không chính xác", "Ops, sai rồi :(", "Bạn trả lời sai rồi", "Ôn tập lại đi nhé!"};
         }
@@ -160,6 +163,19 @@ public class QuizLogic {
         int num = rd.nextInt(4);
         System.out.println(strings[num]);
         System.out.println("Đáp án đúng là: " + answer);
+    }
+
+    private void addMemorized(String answer) {
+        for (QuesAnsDetail i : quesAnsDetailArrayList) {
+            if (i.getAnswer().getContent().equals(answer)) {
+                i.setCheckMemorized();
+                if(i.getCheckMemorized() == 3) {
+                    i.setStatus(StatusValue.MEMORIZED.value);
+                    System.out.println("You have memorized this question. It will not be displayed anymore. You can change it in the Learning Status View");
+                }
+                break;
+            }
+        }
     }
 
 }
