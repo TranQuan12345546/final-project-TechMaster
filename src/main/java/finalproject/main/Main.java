@@ -15,14 +15,17 @@ public class Main {
     public static ArrayList<QuesAnsDetail> quesAnsDetailArrayList = new ArrayList<>();
     public static ArrayList<Account> accounts = new ArrayList<>();
     public static boolean mode = true;
-    public static void main(String[] args) throws IOException {
-
-        ExcelWriterAccount excelWriterAccount = new ExcelWriterAccount();
-        accounts = (ArrayList<Account>) excelWriterAccount.readExcel(accounts);
-        ExcelWriterJava excelWriterJava = new ExcelWriterJava();
-        quesAnsDetailArrayList = (ArrayList<QuesAnsDetail>) excelWriterJava.readExcel(quesAnsDetailArrayList);
-        Scanner sc = new Scanner(System.in);
-        View view = new View();
-        view.mainMenu(sc);
+    public static void main(String[] args) {
+        try {
+            ExcelWriterAccount excelWriterAccount = new ExcelWriterAccount();
+            accounts = (ArrayList<Account>) excelWriterAccount.readExcel(accounts);
+            ExcelWriterJava excelWriterJava = new ExcelWriterJava();
+            quesAnsDetailArrayList = (ArrayList<QuesAnsDetail>) excelWriterJava.readExcel(quesAnsDetailArrayList);
+            Scanner sc = new Scanner(System.in);
+            View view = new View();
+            view.mainMenu(sc);
+        } catch (IOException e) {
+            System.out.println("You need to close all excel table first.");
+        }
     }
 }
