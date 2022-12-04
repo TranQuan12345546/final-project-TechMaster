@@ -4,7 +4,7 @@ import finalproject.logichandle.AccountLogic;
 import java.io.IOException;
 import java.util.Scanner;
 
-import static finalproject.main.Main.*;
+import static finalproject.main.Main.mode;
 
 
 public class View {

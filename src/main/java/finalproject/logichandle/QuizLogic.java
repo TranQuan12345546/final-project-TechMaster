@@ -2,59 +2,111 @@ package finalproject.logichandle;
 
 import finalproject.constant.StatusValue;
 import finalproject.entity.QuesAnsDetail;
+import finalproject.view.View;
 
-import java.util.*;
+
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Random;
+import java.util.Scanner;
 
 import static finalproject.main.Main.quesAnsDetailArrayList;
-import static finalproject.main.Main.view;
 
-public class QuizLogic {
+public class QuizLogic extends View {
     public void quizLogic(Scanner sc) {
         if (quesAnsDetailArrayList.size() < 4) {
             System.out.println("Your database is too small to use this function, please create at least 4 question and answer pairs");
         } else {
-            view.quizForeword();
-            createQuestion(sc);
+            quizForeword();
+            int idQues = createQuestion(sc);
             boolean flag = true;
-            while (flag) {
-                view.askForNextQuestion();
-                int choose = view.checkNumberException(sc, 1, 2);
-                switch (choose) {
-                    case 1:
-                        createQuestion(sc);
-                        break;
-                    case 2:
-                        flag = false;
-                        break;
+            int idQuesOld = idQues;
+            do {
+                if (checkNotMemorized()) {
+                    askForNextQuestion();
+                    int choose = checkNumberException(sc, 1, 2);
+                    if (choose == 1) {
+                        int idQuesNew;
+                        do {
+                            String[] answers = new String[4];
+                            Random rd = new Random();
+                            //id question chose
+                            idQuesNew = randomQuizQuestion(rd, answers);
+                            if (idQuesNew != idQuesOld) {
+                                getQuestion(idQuesNew);
+                                String answer = getAnswer(idQuesNew);
+                                // 1st answer
+                                int idQues1 = randomFirstAnswer(rd, answers, idQuesNew);
+                                // 2nd answer
+                                int idQues2 = randomSecondAnswer(rd, answers, idQuesNew, idQues1);
+                                //3rd answer
+                                randomThirdAnswer(rd, answers, idQuesNew, idQues1, idQues2);
+                                //shuffle element of array answers
+                                Collections.shuffle(Arrays.asList(answers));
+                                showQuiz(answers);
+
+                                chooseCorrectAnswer(sc, answers, answer);
+                            }
+                        } while (idQuesNew == idQuesOld);
+                        idQuesOld = idQuesNew;
+                    }
+                } else {
+                    System.out.println("You have memorized all question.");
+                    flag = false;
                 }
-            }
+            } while (flag);
+
         }
     }
 
-    private void createQuestion(Scanner sc) {
-        //chose 1 CoupleQuesAns and 3 random answer from answerList
-        String[] answers = new String[4];
-        Random rd = new Random();
-        //id question chose
-        int idQues = randomQuizQuestion(rd, answers);
-        String answer = getAnswer(idQues);
-        // 1st answer
-        int idQues1 = randomFirstAnswer(rd, answers, idQues);
-        // 2nd answer
-        int idQues2 = randomSecondAnswer(rd, answers, idQues, idQues1);
-        //3rd answer
-        randomThirdAnswer(rd, answers, idQues, idQues1, idQues2);
-        //shuffle element of array answers
-        Collections.shuffle(Arrays.asList(answers));
+    private int createQuestion(Scanner sc) {
+        int idQues = 0;
+        if (checkNotMemorized()) {
+            //chose 1 CoupleQuesAns and 3 random answer from answerList
+            String[] answers = new String[4];
+            Random rd = new Random();
+            //id question chose
+            idQues = randomQuizQuestion(rd, answers);
+            getQuestion(idQues);
+            String answer = getAnswer(idQues);
+            // 1st answer
+            int idQues1 = randomFirstAnswer(rd, answers, idQues);
+            // 2nd answer
+            int idQues2 = randomSecondAnswer(rd, answers, idQues, idQues1);
+            //3rd answer
+            randomThirdAnswer(rd, answers, idQues, idQues1, idQues2);
+            //shuffle element of array answers
+            Collections.shuffle(Arrays.asList(answers));
+            showQuiz(answers);
 
-        view.showQuiz(answers);
+            chooseCorrectAnswer(sc, answers, answer);
+        } else  {
+            System.out.println("You have memorized all question.");
+        }
+        return idQues;
+    }
 
-        chooseCorrectAnswer(sc, answers, answer);
+    private void getQuestion(int idQues) {
+        quesAnsDetailArrayList.forEach(i -> {
+            if (i.getId() == idQues) {
+                System.out.println(i.getQuestion());
+            }
+        });
+    }
 
+    private boolean checkNotMemorized() {
+        boolean flag = false;
+        for (QuesAnsDetail i : quesAnsDetailArrayList) {
+            if (i.getStatus().equals(StatusValue.NOT_MEMORIZED.value)) {
+                flag = true;
+                break;
+            }
+        }
+        return flag;
     }
 
     private void chooseCorrectAnswer(Scanner sc, String[] answers, String answer) {
-        int choose = view.checkNumberException(sc, 1, 4);
+        int choose = checkNumberException(sc, 1, 4);
         switch (choose) {
             case 1: checkCorrectAnswer(answers[0], answer);
                 break;
@@ -141,7 +193,6 @@ public class QuizLogic {
             idQues = rd.nextInt(quesAnsDetailArrayList.size()) + 1;
             for (QuesAnsDetail j : quesAnsDetailArrayList) {
                 if (j.getId() == idQues && j.getStatus().equals(StatusValue.NOT_MEMORIZED.value)) {
-                    System.out.println(j.getQuestion());
                     answer = j.getAnswer().getContent();
                     flag = false;
                 }
@@ -152,17 +203,21 @@ public class QuizLogic {
     }
 
     private void checkCorrectAnswer(String string, String answer) {
+        Random rd = new Random();
+        int num = rd.nextInt(4);
         String[] strings;
         if (string.equals(answer)) {
             strings = new String[]{"Đáp án chính xác", "Tuyệt vời", "Bạn trả lời đúng rồi", "Làm tốt lắm"};
+            System.out.println(strings[num]);
+            System.out.println("Đáp án đúng là: " + answer);
             addMemorized(answer);
         } else {
             strings = new String[]{"Đáp án không chính xác", "Ops, sai rồi :(", "Bạn trả lời sai rồi", "Ôn tập lại đi nhé!"};
+            System.out.println(strings[num]);
+            System.out.println("Đáp án đúng là: " + answer);
         }
-        Random rd = new Random();
-        int num = rd.nextInt(4);
-        System.out.println(strings[num]);
-        System.out.println("Đáp án đúng là: " + answer);
+
+
     }
 
     private void addMemorized(String answer) {

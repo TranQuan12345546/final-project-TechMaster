@@ -42,7 +42,7 @@ public class ExcelWriterEnglish {
     }
 
     public List<QuesAnsDetail> readExcel(List<QuesAnsDetail> quesAnsDetails) throws IOException {
-        FileInputStream excel = new FileInputStream(new File("English.xlsx"));
+        FileInputStream excel = new FileInputStream("English.xlsx");
         Workbook workbook = new XSSFWorkbook(excel);
         Sheet sheet = workbook.getSheetAt(0);
         Iterator<Row> iterator = sheet.iterator();

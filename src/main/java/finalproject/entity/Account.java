@@ -1,6 +1,6 @@
 package finalproject.entity;
 
-public class Account{
+public class Account {
     public static int ACCOUNT_ID = 0;
 
     private final int id;

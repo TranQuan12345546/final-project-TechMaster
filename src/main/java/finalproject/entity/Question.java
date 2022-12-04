@@ -1,23 +1,22 @@
 package finalproject.entity;
 
 import finalproject.constant.TopicQuestion;
+import finalproject.view.View;
 
 import java.util.Scanner;
 
 import static finalproject.main.Main.mode;
-import static finalproject.main.Main.view;
 
 
 public class Question implements Inputable{
-    public static int ID_QUESTION = 1;
+    public static int ID_QUESTION = 0;
 
     private final int id;
     protected String content;
     protected String Topic;
 
     public Question() {
-        this.id = ID_QUESTION;
-        ID_QUESTION++;
+        this.id = ID_QUESTION++;
     }
 
     public Question(int id) {
@@ -36,6 +35,7 @@ public class Question implements Inputable{
         this.id = ID_QUESTION++;
         this.content = content;
     }
+
 
     public int getId() {
         return id;
@@ -73,7 +73,8 @@ public class Question implements Inputable{
     @Override
     public void input(Scanner sc) {
         if (mode) {
-            view .viewTopic();
+            View view = new View();
+            view.viewTopic();
             int choice = view.checkNumberException(sc, 1, 5);
             switch (choice) {
                 case 1:

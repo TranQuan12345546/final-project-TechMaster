@@ -3,7 +3,7 @@ package finalproject.entity;
 import java.util.Scanner;
 import static finalproject.main.Main.mode;
 
-public class Answer extends Question implements Inputable{
+public class Answer implements Inputable {
     public static int ID_ANSWER = 1;
 
     private final int id;

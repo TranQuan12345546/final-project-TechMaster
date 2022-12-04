@@ -2,16 +2,16 @@ package finalproject.logichandle;
 
 
 import finalproject.entity.Account;
+import finalproject.view.View;
 
 import java.io.IOException;
 import java.util.Scanner;
 import java.util.regex.Pattern;
 
 import static finalproject.main.Main.accounts;
-import static finalproject.main.Main.view;
 
 
-public class AccountLogic {
+public class AccountLogic extends View {
     public void register(Scanner sc) {
         Account account = new Account();
         System.out.println("Enter your email: ");
@@ -260,14 +260,14 @@ public class AccountLogic {
             QuesAnsLogic quesAnsLogic = new QuesAnsLogic();
             GeneralLogic generalLogic = new GeneralLogic();
             while (true) {
-                view.showMenu();
+                showMenu();
                 generalLogic.chooseMenu(sc, quesAnsLogic, account);
             }
         } else {
             System.out.println("Password is not correct");
             System.out.println("1. Re-login");
             System.out.println("2. Forgot password");
-            int choice = view.checkNumberException(sc, 1, 2);
+            int choice = checkNumberException(sc, 1, 2);
             if (choice == 1) {
                 logIn(sc);
             }

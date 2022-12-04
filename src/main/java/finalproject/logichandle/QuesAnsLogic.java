@@ -2,23 +2,20 @@ package finalproject.logichandle;
 
 import finalproject.constant.TopicQuestion;
 import finalproject.entity.QuesAnsDetail;
+import finalproject.view.View;
 
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
-import java.util.stream.Stream;
 
 import static finalproject.main.Main.*;
 
-
-public class QuesAnsLogic {
+public class QuesAnsLogic extends View {
     public void showCouple() {
         if (quesAnsDetailArrayList.size() == 0) {
             System.out.println("You have not added any questions or answers yet.");
         } else {
-            for (QuesAnsDetail i : quesAnsDetailArrayList) {
-                System.out.println(i);
-            }
+            quesAnsDetailArrayList.forEach(i -> System.out.println(i));
         }
 
     }
@@ -31,7 +28,7 @@ public class QuesAnsLogic {
             System.out.println("Would you like to add a follow-up question?");
             System.out.println("1. Yes");
             System.out.println("2. No");
-            int choose = view.checkNumberException(sc, 1, 2);
+            int choose = checkNumberException(sc, 1, 2);
             if (choose == 1) {
                 QuesAnsDetail quesAnsDetail2 = new QuesAnsDetail();
                 quesAnsDetail2.inputQuesAns(sc);
@@ -50,7 +47,7 @@ public class QuesAnsLogic {
             System.out.println("Do you want to edit the question or the answer? ");
             System.out.println("1. Question.");
             System.out.println("2. Answer.");
-            int choose = view.checkNumberException(sc, 1, 2);
+            int choose = checkNumberException(sc, 1, 2);
             if (choose == 1) {
                 editQuestion(sc);
             }
@@ -120,7 +117,7 @@ public class QuesAnsLogic {
             if (mode) {
                 System.out.println("1. Search by keyword");
                 System.out.println("2. Search by topic");
-                int choice = view.checkNumberException(sc, 1, 2);
+                int choice = checkNumberException(sc, 1, 2);
                 if (choice == 1) {
                     findQuestionByKey(sc);
                 }
@@ -134,8 +131,8 @@ public class QuesAnsLogic {
     }
 
     private void findQuestionByTopic(Scanner sc) {
-        view.viewTopic();
-        int choose = view.checkNumberException(sc, 1, 5);
+        viewTopic();
+        int choose = checkNumberException(sc, 1, 5);
         switch (choose) {
             case 1:
                 findTopic(TopicQuestion.JAVA_CORE.value);
@@ -169,9 +166,7 @@ public class QuesAnsLogic {
         }
         if (count != 0) {
             System.out.println("There are " + count + " question with topic : " + string);
-            for (QuesAnsDetail i : quesAnsDetailArrayList1) {
-                System.out.println(i);
-            }
+            quesAnsDetailArrayList1.forEach(System.out::println);
         }
     }
 
@@ -194,10 +189,12 @@ public class QuesAnsLogic {
 
     public void practice(Scanner sc) {
         Random rd = new Random();
+        // Java mode
         if (mode) {
+            // create a suitable arraylist
             ArrayList<QuesAnsDetail> quesAnsDetailArrayList1 = new ArrayList<>();
-            view.viewPractice();
-            int choice = view.checkNumberException(sc, 1, 6);
+            viewPractice();
+            int choice = checkNumberException(sc, 1, 6);
             switch (choice) {
                 case 1:
                     quesAnsDetailArrayList1 = practiceTopic(TopicQuestion.JAVA_CORE.value);
@@ -218,6 +215,7 @@ public class QuesAnsLogic {
                     quesAnsDetailArrayList1 = quesAnsDetailArrayList;
                     break;
             }
+            // logic handle
             if (quesAnsDetailArrayList1.size() == 0) {
                 System.out.println("No question with this topic.");
             } else {
@@ -231,8 +229,8 @@ public class QuesAnsLogic {
                 int choose;
                 int idQuesOld = idQues;
                 do {
-                    view.askForNextQuestion();
-                    choose = view.checkNumberException(sc, 1, 2);
+                    askForNextQuestion();
+                    choose = checkNumberException(sc, 1, 2);
                     if (choose == 1) {
                         int idQuesNew;
                         do {
@@ -249,6 +247,7 @@ public class QuesAnsLogic {
                     }
                 } while (choose != 2);
             }
+        // end Java mode
         } else {
             // English mode
             int idQues = randomQuestion();
@@ -261,8 +260,8 @@ public class QuesAnsLogic {
             int choose;
             int idQuesOld = idQues;
             do {
-                view.askForNextQuestion();
-                choose = view.checkNumberException(sc, 1, 2);
+                askForNextQuestion();
+                choose = checkNumberException(sc, 1, 2);
                 if (choose == 1) {
                     int idQuesNew;
                     do {

@@ -2,18 +2,18 @@ package finalproject.logichandle;
 
 import finalproject.constant.StatusValue;
 import finalproject.entity.*;
+import finalproject.view.View;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 import static finalproject.main.Main.*;
-import static finalproject.main.Main.quesAnsDetailArrayList;
 
-public class GeneralLogic {
+public class GeneralLogic extends View {
     public void chooseMenu(Scanner sc, QuesAnsLogic quesAnsLogic, Account account) throws IOException {
         GeneralLogic generalLogic = new GeneralLogic();
-        int choice = view.checkNumberException(sc, 1, 10);
+        int choice = checkNumberException(sc, 1, 10);
         switch (choice) {
             case 1:
                 quesAnsLogic.addQuesAns(sc);
@@ -50,8 +50,8 @@ public class GeneralLogic {
     }
 
     private void learningStatus(Scanner sc) {
-        view.menuStatus();
-        int choose = view.checkNumberException(sc, 1, 2);
+        menuStatus();
+        int choose = checkNumberException(sc, 1, 2);
         if (choose == 1) {
             for (QuesAnsDetail i : quesAnsDetailArrayList) {
                 System.out.println(i.getQuestion() + " Status: " + i.getStatus());
@@ -87,7 +87,7 @@ public class GeneralLogic {
     public void mode(Scanner sc) throws IOException {
         System.out.println("1. Java Mode");
         System.out.println("2. English Mode");
-        int choose = view.checkNumberException(sc, 1, 2);
+        int choose = checkNumberException(sc, 1, 2);
         if (choose == 1) {
             mode = true;
             ExcelWriterJava excelWriterJava = new ExcelWriterJava();
@@ -124,8 +124,8 @@ public class GeneralLogic {
         AccountLogic accountLogic = new AccountLogic();
         boolean flag = true;
         while (flag) {
-            view.LoginView();
-            int choice7 = view.checkNumberException(sc, 1, 5);
+            LoginView();
+            int choice7 = checkNumberException(sc, 1, 5);
             switch (choice7) {
                 case 1: accountLogic.changeUsername(sc, account);
                     break;
@@ -134,7 +134,7 @@ public class GeneralLogic {
                 case 3: accountLogic.changePassword(sc, account);
                     break;
                 case 4:
-                    view.mainMenu(sc);
+                    mainMenu(sc);
                     break;
                 case 5:
                     ExcelWriterAccount excelWriterAccount = new ExcelWriterAccount();

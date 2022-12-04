@@ -1,9 +1,11 @@
 package finalproject.entity;
 
-import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -42,7 +44,7 @@ public class ExcelWriterJava {
     }
 
     public List<QuesAnsDetail> readExcel(List<QuesAnsDetail> quesAnsDetails) throws IOException {
-        FileInputStream excel = new FileInputStream(new File("Question.xlsx"));
+        FileInputStream excel = new FileInputStream("Question.xlsx");
         Workbook workbook = new XSSFWorkbook(excel);
         Sheet sheet = workbook.getSheetAt(0);
         Iterator<Row> iterator = sheet.iterator();
