@@ -19,44 +19,62 @@ public class QuizLogic extends View {
         } else {
             quizForeword();
             int idQues = createQuestion(sc);
-            boolean flag = true;
-            int idQuesOld = idQues;
-            do {
-                if (checkNotMemorized()) {
-                    askForNextQuestion();
-                    int choose = checkNumberException(sc, 1, 2);
-                    if (choose == 1) {
-                        int idQuesNew;
-                        do {
-                            String[] answers = new String[4];
-                            Random rd = new Random();
-                            //id question chose
-                            idQuesNew = randomQuizQuestion(rd, answers);
-                            if (idQuesNew != idQuesOld) {
-                                getQuestion(idQuesNew);
-                                String answer = getAnswer(idQuesNew);
-                                // 1st answer
-                                int idQues1 = randomFirstAnswer(rd, answers, idQuesNew);
-                                // 2nd answer
-                                int idQues2 = randomSecondAnswer(rd, answers, idQuesNew, idQues1);
-                                //3rd answer
-                                randomThirdAnswer(rd, answers, idQuesNew, idQues1, idQues2);
-                                //shuffle element of array answers
-                                Collections.shuffle(Arrays.asList(answers));
-                                showQuiz(answers);
+            if (checkNotMemorized()) {
+                boolean flag = true;
+                int idQuesOld = idQues;
+                do {
+                    if (checkNotMemorized()) {
+                        askForNextQuestion();
+                        int choose = checkNumberException(sc, 1, 2);
+                        if (choose == 1) {
+                            int idQuesNew;
+                            do {
+                                String[] answers = new String[4];
+                                Random rd = new Random();
+                                //id question chose
+                                idQuesNew = randomQuizQuestion(rd, answers);
+                                if (checkOneMemorized()) {
+                                    createQuestion(sc);
+                                    break;
+                                }
+                                if (idQuesNew != idQuesOld) {
+                                    getQuestion(idQuesNew);
+                                    String answer = getAnswer(idQuesNew);
+                                    // 1st answer
+                                    int idQues1 = randomFirstAnswer(rd, answers, idQuesNew);
+                                    // 2nd answer
+                                    int idQues2 = randomSecondAnswer(rd, answers, idQuesNew, idQues1);
+                                    //3rd answer
+                                    randomThirdAnswer(rd, answers, idQuesNew, idQues1, idQues2);
+                                    //shuffle element of array answers
+                                    Collections.shuffle(Arrays.asList(answers));
+                                    showQuiz(answers);
 
-                                chooseCorrectAnswer(sc, answers, answer);
-                            }
-                        } while (idQuesNew == idQuesOld);
-                        idQuesOld = idQuesNew;
+                                    chooseCorrectAnswer(sc, answers, answer);
+                                }
+
+                            } while (idQuesNew == idQuesOld);
+                            idQuesOld = idQuesNew;
+                        } else {
+                            flag = false;
+                        }
+                    } else {
+                        System.out.println("You have memorized all question.");
+                        flag = false;
                     }
-                } else {
-                    System.out.println("You have memorized all question.");
-                    flag = false;
-                }
-            } while (flag);
-
+                } while (flag);
+            }
         }
+    }
+
+    private boolean checkOneMemorized() {
+        int count = 0;
+       for (QuesAnsDetail i : quesAnsDetailArrayList) {
+           if (i.getStatus().equals(StatusValue.MEMORIZED.value)) {
+               count++;
+           }
+       }
+        return count != 1;
     }
 
     private int createQuestion(Scanner sc) {
@@ -226,7 +244,7 @@ public class QuizLogic extends View {
                 i.setCheckMemorized();
                 if(i.getCheckMemorized() == 3) {
                     i.setStatus(StatusValue.MEMORIZED.value);
-                    System.out.println("You have memorized this question. It will not be displayed anymore. You can change it in the Learning Status View");
+                    System.out.println("You have memorized this question. It will not be displayed anymore. You can change it in the Learning Status.");
                 }
                 break;
             }

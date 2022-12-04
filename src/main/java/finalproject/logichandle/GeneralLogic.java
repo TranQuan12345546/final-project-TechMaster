@@ -57,7 +57,7 @@ public class GeneralLogic extends View {
                 System.out.println(i.getQuestion() + " Status: " + i.getStatus());
             }
         } else {
-            System.out.println("Enter the question id you want to change the status : ");
+            System.out.print("Enter the question id you want to change the status : ");
             boolean flag = true;
             int id;
             do {
@@ -67,12 +67,15 @@ public class GeneralLogic extends View {
                         if (i.getId() == id) {
                             if(i.getStatus().equals(StatusValue.MEMORIZED.value)) {
                                 i.setStatus(StatusValue.NOT_MEMORIZED.value);
+                                System.out.println("Changed status to Memorized.");
                             } else {
                                 i.setStatus(StatusValue.MEMORIZED.value);
+                                System.out.println("Changed status to Not memorized.");
                             }
                             flag = false;
                         }
                     }
+
                     if (flag) {
                         System.out.println("No questions with id " + id);
                     }

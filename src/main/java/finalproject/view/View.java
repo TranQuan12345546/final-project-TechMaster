@@ -26,6 +26,7 @@ public class View {
         System.out.println("Welcome to the program, please choose: ");
         System.out.println("1. Register");
         System.out.println("2. Log in");
+        System.out.print("Choose: ");
     }
 
 
@@ -36,6 +37,7 @@ public class View {
         System.out.println("3. Change password.");
         System.out.println("4. Log out.");
         System.out.println("5. Return to main menu");
+        System.out.print("Choose: ");
     }
 
     public void showMenu() {
@@ -53,7 +55,7 @@ public class View {
         System.out.println("6. Quiz.");
         System.out.println("7. Account setting.");
         System.out.println("8. Change mode.");
-        System.out.println("9. Learning Status");
+        System.out.println("9. Learning Status.");
         System.out.println("10. Exit.");
         System.out.print("Choose: ");
     }
@@ -62,6 +64,7 @@ public class View {
     public void menuStatus() {
         System.out.println("1. View Learning status");
         System.out.println("2. Change status");
+        System.out.print("Choose: ");
     }
 
     public void viewTopic() {
@@ -71,6 +74,7 @@ public class View {
         System.out.println("3. Java Threads");
         System.out.println("4. Java Collections");
         System.out.println("5. Exception");
+        System.out.print("Choose: ");
     }
 
     public void showQuiz(String[] answers) {

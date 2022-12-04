@@ -28,6 +28,7 @@ public class QuesAnsLogic extends View {
             System.out.println("Would you like to add a follow-up question?");
             System.out.println("1. Yes");
             System.out.println("2. No");
+            System.out.print("Choose: ");
             int choose = checkNumberException(sc, 1, 2);
             if (choose == 1) {
                 QuesAnsDetail quesAnsDetail2 = new QuesAnsDetail();
@@ -47,6 +48,7 @@ public class QuesAnsLogic extends View {
             System.out.println("Do you want to edit the question or the answer? ");
             System.out.println("1. Question.");
             System.out.println("2. Answer.");
+            System.out.print("Choose: ");
             int choose = checkNumberException(sc, 1, 2);
             if (choose == 1) {
                 editQuestion(sc);
@@ -171,7 +173,7 @@ public class QuesAnsLogic extends View {
     }
 
     private void findQuestionByKey(Scanner sc) {
-        System.out.println("Enter the keyword you want to search for: ");
+        System.out.print("Enter the keyword you want to search for: ");
         String findQues = sc.nextLine();
         boolean flag = true;
         System.out.println("Result: ");

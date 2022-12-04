@@ -62,7 +62,7 @@ public class Question implements Inputable{
         if (mode) {
             return  "Topic: '" + Topic + '\'' +
                     "." +
-                    " Question: " + content + '\'' + ". ";
+                    " Question: " + id + ": "+ content + '\'' + ". ";
         } else {
             return "Từ vựng " + id + ": " +
                     content + ". ";

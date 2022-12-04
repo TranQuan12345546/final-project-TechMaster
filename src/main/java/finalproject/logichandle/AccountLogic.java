@@ -267,6 +267,7 @@ public class AccountLogic extends View {
             System.out.println("Password is not correct");
             System.out.println("1. Re-login");
             System.out.println("2. Forgot password");
+            System.out.print("Choose: ");
             int choice = checkNumberException(sc, 1, 2);
             if (choice == 1) {
                 logIn(sc);
