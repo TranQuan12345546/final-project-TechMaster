@@ -52,9 +52,7 @@ public class QuesAnsLogic extends View {
             int choose = checkNumberException(sc, 1, 2);
             if (choose == 1) {
                 editQuestion(sc);
-            }
-
-            if (choose == 2) {
+            } else {
                 editAnswer(sc);
             }
         }
@@ -62,54 +60,31 @@ public class QuesAnsLogic extends View {
 
     public void editQuestion(Scanner sc) {
         System.out.print("Enter the question ID you want to edit: ");
-        boolean flag = true;
-        int idQues;
-        do {
-            try {
-                idQues = Integer.parseInt(sc.nextLine());
-                for (QuesAnsDetail i : quesAnsDetailArrayList) {
-                    if (i.getId() == idQues) {
-                        System.out.print("Enter edit content: ");
-                        String editQues = sc.nextLine();
-                        i.getQuestion().setContent(editQues);
-                        System.out.println("Edited question with id " + idQues);
-                        flag = false;
-                        break;
-                    }
-                }
-                if (flag) {
-                    System.out.println("No questions with id " + idQues);
-                }
-            } catch (Exception e) {
-                System.out.println("You need to enter a number.");
+        int idQues = checkNumberException(sc, 1, quesAnsDetailArrayList.size());
+        for (QuesAnsDetail i : quesAnsDetailArrayList) {
+            if (i.getId() == idQues) {
+                System.out.print("Enter edit content: ");
+                String editQues = sc.nextLine();
+                i.getQuestion().setContent(editQues);
+                break;
             }
-        } while (flag);
+        }
+        System.out.println("Edited question with id " + idQues);
     }
 
     public void editAnswer(Scanner sc) {
         System.out.print("Enter the question ID you want to edit: ");
-        boolean flag = true;
-        int idAns;
-        do {
-            try {
-                idAns = Integer.parseInt(sc.nextLine());
-                for (QuesAnsDetail i : quesAnsDetailArrayList) {
-                    if (i.getId() == idAns) {
-                        System.out.print("Enter edit content: ");
-                        String editAns = sc.nextLine();
-                        i.getAnswer().setContent(editAns);
-                        System.out.println("Edited answer with id " + idAns);
-                        flag = false;
-                        break;
-                    }
-                }
-                if (flag) {
-                    System.out.println("No answer with id " + idAns);
-                }
-            } catch (Exception e) {
-                System.out.println("You need to enter a number.");
+        int idAns = checkNumberException(sc, 1, quesAnsDetailArrayList.size());
+        for (QuesAnsDetail i : quesAnsDetailArrayList) {
+            if (i.getId() == idAns) {
+                System.out.print("Enter edit content: ");
+                String editAns = sc.nextLine();
+                i.getAnswer().setContent(editAns);
+                break;
             }
-        } while (flag);
+        }
+        System.out.println("Edited answer with id " + idAns);
+
     }
 
     public void findQuestion(Scanner sc) {

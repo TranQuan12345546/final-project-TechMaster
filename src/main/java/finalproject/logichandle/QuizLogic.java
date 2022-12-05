@@ -69,12 +69,12 @@ public class QuizLogic extends View {
 
     private boolean checkOneMemorized() {
         int count = 0;
-       for (QuesAnsDetail i : quesAnsDetailArrayList) {
-           if (i.getStatus().equals(StatusValue.MEMORIZED.value)) {
-               count++;
-           }
-       }
-        return count != 1;
+        for (QuesAnsDetail i : quesAnsDetailArrayList) {
+            if (i.getStatus().equals(StatusValue.MEMORIZED.value)) {
+                count++;
+            }
+        }
+        return count == 1;
     }
 
     private int createQuestion(Scanner sc) {

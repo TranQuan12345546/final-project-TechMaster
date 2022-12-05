@@ -76,8 +76,7 @@ public class QuesAnsDetail {
     @Override
     public String toString() {
         if(mode) {
-            return "Question " + id + ": " +
-                    question +
+            return "" + question +
                     answer;
         } else {
             return "" + question +

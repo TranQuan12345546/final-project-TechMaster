@@ -9,7 +9,7 @@ import static finalproject.main.Main.mode;
 
 
 public class Question implements Inputable{
-    public static int ID_QUESTION = 0;
+    public static int ID_QUESTION = 1;
 
     private final int id;
     protected String content;
@@ -36,11 +36,6 @@ public class Question implements Inputable{
         this.content = content;
     }
 
-
-    public int getId() {
-        return id;
-    }
-
     public String getContent() {
         return content;
     }
@@ -60,9 +55,10 @@ public class Question implements Inputable{
     @Override
     public String toString() {
         if (mode) {
-            return  "Topic: '" + Topic + '\'' +
+            return  "Question " + id +
+                    ": Topic '" + Topic + '\'' +
                     "." +
-                    " Question: " + id + ": "+ content + '\'' + ". ";
+                    content + '\'' + ". ";
         } else {
             return "Từ vựng " + id + ": " +
                     content + ". ";

@@ -25,10 +25,6 @@ public class Answer implements Inputable {
         this.content = content;
     }
 
-    public int getId() {
-        return id;
-    }
-
     public String getContent() {
         return content;
     }

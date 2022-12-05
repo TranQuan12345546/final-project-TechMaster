@@ -58,31 +58,18 @@ public class GeneralLogic extends View {
             }
         } else {
             System.out.print("Enter the question id you want to change the status : ");
-            boolean flag = true;
-            int id;
-            do {
-                try {
-                    id = Integer.parseInt(sc.nextLine());
-                    for (QuesAnsDetail i : quesAnsDetailArrayList) {
-                        if (i.getId() == id) {
-                            if(i.getStatus().equals(StatusValue.MEMORIZED.value)) {
-                                i.setStatus(StatusValue.NOT_MEMORIZED.value);
-                                System.out.println("Changed status to Memorized.");
-                            } else {
-                                i.setStatus(StatusValue.MEMORIZED.value);
-                                System.out.println("Changed status to Not memorized.");
-                            }
-                            flag = false;
-                        }
+            int id = checkNumberException(sc, 1, quesAnsDetailArrayList.size());
+            for (QuesAnsDetail i : quesAnsDetailArrayList) {
+                if (i.getId() == id) {
+                    if(i.getStatus().equals(StatusValue.MEMORIZED.value)) {
+                        i.setStatus(StatusValue.NOT_MEMORIZED.value);
+                        System.out.println("Status changed to Memorized.");
+                    } else {
+                        i.setStatus(StatusValue.MEMORIZED.value);
+                        System.out.println("Status changed to Not memorized.");
                     }
-
-                    if (flag) {
-                        System.out.println("No questions with id " + id);
-                    }
-                } catch (Exception e) {
-                    System.out.println("You need to enter a number. ");
                 }
-            } while (flag);
+            }
         }
 
     }
